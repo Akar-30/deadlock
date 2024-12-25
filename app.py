@@ -13,6 +13,16 @@ def process():
 
 @app.route('/check_deadlock', methods=['POST'])
 def check_deadlock():
+    """
+    Checks for deadlock in a system using the Banker's algorithm.
+    This function retrieves resource allocation data from an HTTP request,
+    calculates the need matrix, and determines if the system is in a safe state.
+    If the system is in a safe state, it returns the safe sequence of processes.
+    Otherwise, it returns an empty list indicating a deadlock.
+    Returns:
+        render_template: Renders the 'result.html' template with the result of the deadlock check.
+    """
+    
     resource_types = int(request.form.get('resource_types', 1))
     max_need = []
     allocation = []
