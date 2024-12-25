@@ -14,15 +14,30 @@
         <div id="processes">
             <div class="process">
                 <label>Process 1</label>
-                <input type="number" name="max_need[]" placeholder="Max Need" required>
-                <input type="number" name="allocation[]" placeholder="Allocation" required>
+                <div class="resource-group">
+                    <h3>Max Needs</h3>
+                    {% for i in range(resource_types) %}
+                    <input type="number" name="max_need_{{ i }}[]" placeholder="Max Need (Resource {{ i+1 }})" required>
+                    {% endfor %}
+                </div>
+                <div class="resource-group">
+                    <h3>Allocations</h3>
+                    {% for i in range(resource_types) %}
+                    <input type="number" name="allocation_{{ i }}[]" placeholder="Allocation (Resource {{ i+1 }})"
+                        required>
+                    {% endfor %}
+                </div>
                 <button type="button" class="remove-process" onclick="removeProcess(this)">Remove</button>
             </div>
         </div>
         <button type="button" class="add-process" onclick="addProcess()">Add Process</button>
         <br><br>
-        <label>Available Resources:</label>
-        <input type="number" name="available" placeholder="Available Resources" required>
+        <div class="resource-group">
+            <h3>Available Resources</h3>
+            {% for i in range(resource_types) %}
+            <input type="number" name="available_{{ i }}" placeholder="Available (Resource {{ i+1 }})" required>
+            {% endfor %}
+        </div>
         <br><br>
         <button type="submit">Check Deadlock</button>
         <br><br>
@@ -30,16 +45,23 @@
     </form>
 
     <script>
+        const resourceTypes = "{{ resource_types }}";
+
         function addProcess() {
             const processCount = document.querySelectorAll('.process').length + 1;
             const processDiv = document.createElement('div');
             processDiv.className = 'process';
-            processDiv.innerHTML = `
-                <label>Process ${processCount}</label>
-                <input type="number" name="max_need[]" placeholder="Max Need" required>
-                <input type="number" name="allocation[]" placeholder="Allocation" required>
-                <button type="button" class="remove-process" onclick="removeProcess(this)">Remove</button>
-            `;
+            let inputs = `<label>Process ${processCount}</label>`;
+            inputs += `<div class="resource-group"><h3>Max Needs</h3>`;
+            for (let i = 0; i < resourceTypes; i++) {
+                inputs += `<input type="number" name="max_need_${i}[]" placeholder="Max Need (Resource ${i + 1})" required>`;
+            }
+            inputs += `</div><div class="resource-group"><h3>Allocations</h3>`;
+            for (let i = 0; i < resourceTypes; i++) {
+                inputs += `<input type="number" name="allocation_${i}[]" placeholder="Allocation (Resource ${i + 1})" required>`;
+            }
+            inputs += `</div><button type="button" class="remove-process" onclick="removeProcess(this)">Remove</button>`;
+            processDiv.innerHTML = inputs;
             document.getElementById('processes').appendChild(processDiv);
         }
 
