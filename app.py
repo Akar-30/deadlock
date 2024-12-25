@@ -8,27 +8,35 @@ def home():
 
 @app.route('/process')
 def process():
-    return render_template('process.html')
+    resource_types = int(request.args.get('resource_types', 1))
+    return render_template('process.html', resource_types=resource_types)
 
 @app.route('/check_deadlock', methods=['POST'])
 def check_deadlock():
-    max_need = list(map(int, request.form.getlist('max_need[]')))
-    allocation = list(map(int, request.form.getlist('allocation[]')))
-    available = int(request.form['available'])
+    resource_types = int(request.form.get('resource_types', 1))
+    max_need = []
+    allocation = []
+    available = []
 
-    num_processes = len(max_need)
-    need = [max_need[i] - allocation[i] for i in range(num_processes)]
+    for i in range(resource_types):
+        max_need.append(list(map(int, request.form.getlist(f'max_need_{i}[]'))))
+        allocation.append(list(map(int, request.form.getlist(f'allocation_{i}[]'))))
+        available.append(int(request.form[f'available_{i}']))
+
+    num_processes = len(max_need[0])
+    need = [[max_need[i][j] - allocation[i][j] for j in range(num_processes)] for i in range(resource_types)]
 
     def is_safe(available, allocation, need):
-        work = available
+        work = available[:]
         finish = [False] * num_processes
         safe_sequence = []
 
         while len(safe_sequence) < num_processes:
             allocated = False
             for i in range(num_processes):
-                if not finish[i] and need[i] <= work:
-                    work += allocation[i]
+                if not finish[i] and all(need[j][i] <= work[j] for j in range(resource_types)):
+                    for j in range(resource_types):
+                        work[j] += allocation[j][i]
                     finish[i] = True
                     safe_sequence.append(i)
                     allocated = True
