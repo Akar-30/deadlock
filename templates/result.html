@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banker's Algorithm Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+</head>
+
+<body>
+    <h1>Banker's Algorithm Result</h1>
+    <div id="sequence-container"></div>
+    <br><br>
+    <a href="{{ url_for('process') }}">Back to Process Page</a>
+
+    <script>
+        const resultData = {{ result | tojson | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='result.js') }}"></script>
+</body>
+
+</html>

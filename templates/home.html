@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to Deadlock Detection and Recovery</h1>
+        <p>
+            This application implements Deadlock Detection and Recovery using Banker's Algorithm.
+            Banker's Algorithm is a resource allocation and deadlock avoidance algorithm that tests for safety by
+            simulating
+            the allocation of predetermined maximum possible amounts of all resources, and then makes an "s-state" check
+            to
+            test for possible activities, before deciding whether allocation should be allowed to continue.
+        </p>
+        <p>
+            The algorithm works by maintaining a set of data structures to keep track of the resources allocated to each
+            process,
+            the maximum resources each process may need, and the resources currently available. It then uses these data
+            structures
+            to determine if the system is in a safe state, meaning that there is a sequence of processes that can be
+            completed
+            without causing a deadlock.
+        </p>
+        <p>
+            If the system is in a safe state, the resources can be allocated to the processes. If not, the system must
+            wait until
+            enough resources are available to ensure that the system remains in a safe state. This helps in preventing
+            deadlocks
+            by ensuring that resources are allocated in a way that avoids circular wait conditions.
+        </p>
+        <button onclick="window.location.href='/process'">Start</button>
+    </div>
+</body>
+
+</html>

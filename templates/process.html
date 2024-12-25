@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banker's Algorithm</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='process.css') }}">
+</head>
+
+<body>
+    <h1>Banker's Algorithm Simulation</h1>
+    <form method="POST" action="/check_deadlock">
+        <div id="processes">
+            <div class="process">
+                <label>Process 1</label>
+                <input type="number" name="max_need[]" placeholder="Max Need" required>
+                <input type="number" name="allocation[]" placeholder="Allocation" required>
+                <button type="button" class="remove-process" onclick="removeProcess(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="add-process" onclick="addProcess()">Add Process</button>
+        <br><br>
+        <label>Available Resources:</label>
+        <input type="number" name="available" placeholder="Available Resources" required>
+        <br><br>
+        <button type="submit">Check Deadlock</button>
+        <br><br>
+        <a href="{{ url_for('home') }}" class="home-btn">Home</a>
+    </form>
+
+    <script>
+        function addProcess() {
+            const processCount = document.querySelectorAll('.process').length + 1;
+            const processDiv = document.createElement('div');
+            processDiv.className = 'process';
+            processDiv.innerHTML = `
+                <label>Process ${processCount}</label>
+                <input type="number" name="max_need[]" placeholder="Max Need" required>
+                <input type="number" name="allocation[]" placeholder="Allocation" required>
+                <button type="button" class="remove-process" onclick="removeProcess(this)">Remove</button>
+            `;
+            document.getElementById('processes').appendChild(processDiv);
+        }
+
+        function removeProcess(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+
+</html>
